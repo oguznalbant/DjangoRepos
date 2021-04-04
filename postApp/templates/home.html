@@ -8,15 +8,21 @@
     <meta name="description"
         content="Drag a link to reconnect it. Nodes have custom Adornments for selection, resizing, and rotating.  The Palette includes links." />
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    <link rel='stylesheet' href="{% static 'css/DataInspector.css' %}" />
+    <link rel='stylesheet' href="{% static 'css/jquery-ui.min.css' %}" />
+    <link rel='stylesheet' href="{% static 'css/site.css' %}" />
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="{% static 'js/go.js' %}"></script>
     <script src="{% static 'js/Figures.js' %}"></script>
     <script src="{% static 'js/DataInspector.js' %}"></script>
-    <link rel='stylesheet' href="{% static 'css/DataInspector.css' %}" />
     <script src="{% static 'js/goSamples.js' %}"></script> <!-- this is only for the GoJS Samples framework -->
+    
 
     <script id="code">
         function init() {
+            
+                     
             //if (window.goSamples) goSamples();  // init for these samples -- you don't need to call this
             var $ = go.GraphObject.make;  // for conciseness in defining templates
 
@@ -198,52 +204,55 @@
                     )
                 );
 
+
+                
             load();  // load an initial diagram from some JSON text
 
             // initialize the Palette that is on the left side of the page
-            myPalette =
-                $(go.Palette, "myPaletteDiv",  // must name or refer to the DIV HTML element
-                    {
-                        maxSelectionCount: 1,
-                        nodeTemplateMap: myDiagram.nodeTemplateMap,  // share the templates used by myDiagram
-                        linkTemplate: // simplify the link template, just in this Palette
-                            $(go.Link,
-                                { // because the GridLayout.alignment is Location and the nodes have locationSpot == Spot.Center,
-                                    // to line up the Link in the same manner we have to pretend the Link has the same location spot
-                                    locationSpot: go.Spot.Center,
-                                    selectionAdornmentTemplate:
-                                        $(go.Adornment, "Link",
-                                            { locationSpot: go.Spot.Center },
-                                            $(go.Shape,
-                                                { isPanelMain: true, fill: null, stroke: "deepskyblue", strokeWidth: 0 }),
-                                            $(go.Shape,  // the arrowhead
-                                                { toArrow: "Standard", stroke: null })
-                                        )
-                                },
-                                {
-                                    routing: go.Link.AvoidsNodes,
-                                    curve: go.Link.JumpOver,
-                                    corner: 5,
-                                    toShortLength: 4
-                                },
-                                new go.Binding("points"),
-                                $(go.Shape,  // the link path shape
-                                    { isPanelMain: true, strokeWidth: 2 }),
-                                $(go.Shape,  // the arrowhead
-                                    { toArrow: "Standard", stroke: null })
-                            ),
-                        model: new go.GraphLinksModel([  // specify the contents of the Palette
-                            { text: "", figure: "RoundedRectangle", fill: "lightyellow", },
-                            { text: "Operand", figure: "RoundedRectangle",value: "", fill: "#5a9bfe" },
-                            { text: "+", figure: "Diamond", operator: true},
-                            { text: "-", figure: "Diamond",  operator: true },
-                            { text: "*", figure: "Diamond",  operator: true },
-                            { text: "/", figure: "Diamond",  operator: true },
-                        ], [
-                            // the Palette also has a disconnected Link, which the user can drag-and-drop
-                            { points: new go.List(/*go.Point*/).addAll([new go.Point(0, 0), new go.Point(30, 0), new go.Point(30, 40), new go.Point(60, 40)]) }
-                        ])
-                    });
+            // myPalette =
+            //     $(go.Palette, "myPaletteDiv",  // must name or refer to the DIV HTML element
+            //         {
+            //             maxSelectionCount: 1,
+            //             nodeTemplateMap: myDiagram.nodeTemplateMap,  // share the templates used by myDiagram
+            //             linkTemplate: // simplify the link template, just in this Palette
+            //                 $(go.Link,
+            //                     { // because the GridLayout.alignment is Location and the nodes have locationSpot == Spot.Center,
+            //                         // to line up the Link in the same manner we have to pretend the Link has the same location spot
+            //                         locationSpot: go.Spot.Center,
+            //                         selectionAdornmentTemplate:
+            //                             $(go.Adornment, "Link",
+            //                                 { locationSpot: go.Spot.Center },
+            //                                 $(go.Shape,
+            //                                     { isPanelMain: true, fill: null, stroke: "deepskyblue", strokeWidth: 0 }),
+            //                                 $(go.Shape,  // the arrowhead
+            //                                     { toArrow: "Standard", stroke: null })
+            //                             )
+            //                     },
+            //                     {
+            //                         routing: go.Link.AvoidsNodes,
+            //                         curve: go.Link.JumpOver,
+            //                         corner: 5,
+            //                         toShortLength: 4
+            //                     },
+            //                     new go.Binding("points"),
+            //                     $(go.Shape,  // the link path shape
+            //                         { isPanelMain: true, strokeWidth: 2 }),
+            //                     $(go.Shape,  // the arrowhead
+            //                         { toArrow: "Standard", stroke: null })
+            //                 ),
+            //             model: new go.GraphLinksModel([  // specify the contents of the Palette
+            //                 { text: "", figure: "RoundedRectangle", fill: "lightyellow", },
+            //                 { text: "Operand", figure: "RoundedRectangle",value: "", fill: "#5a9bfe" },
+            //                 { text: "+", figure: "Diamond", operator: true},
+            //                 { text: "-", figure: "Diamond",  operator: true },
+            //                 { text: "*", figure: "Diamond",  operator: true },
+            //                 { text: "/", figure: "Diamond",  operator: true },
+            //             ], 
+            //             [
+            //                 // the Palette also has a disconnected Link, which the user can drag-and-drop
+            //                 { points: new go.List(/*go.Point*/).addAll([new go.Point(0, 0), new go.Point(30, 0), new go.Point(30, 40), new go.Point(60, 40)]) }
+            //             ])
+            //         });
 
                     var inspector = new Inspector('myInspectorDiv', myDiagram,
                                     {
@@ -258,10 +267,11 @@
                                       // uncomment this line to only inspect the named properties below instead of all properties on each object:
                                       // includesOwnProperties: false,
                                       properties: {
-                                         "text": {show: Inspector.showIfNotOperator},
-                                          "value": {show: Inspector.showIfNotOperator},
-                                          "fill": { show: Inspector.showIfPresent, type: 'color' },
-            // an example of specifying the type
+                                         "text": {show: Inspector.showIfNotOperator, type: "string"},
+                                          "value": {show: Inspector.showIfNotArrayAndOperator, type: "string"},
+                                          "array" : { show: Inspector.showIfArrayOperator, type: 'textarea'},
+                                          "fill": { show: Inspector.showIfPresent, type: 'color' }
+                                // an example of specifying the type
                                     //     // key would be automatically added for nodes, but we want to declare it read-only also:
                                     //     "key": { readOnly: true, show: Inspector.showIfPresent },
                                     //     // color would be automatically added for nodes, but we want to declare it a color also:
@@ -284,13 +294,72 @@
                                     //     "password": { show: Inspector.showIfPresent, type: 'password' }
                                       }
                                     });
-                }
 
+                                    
+    jQuery("#accordion").accordion({
+        activate: function(event, ui) {
+          myPaletteSmall.requestUpdate();
+          myPaletteSmall2.requestUpdate();
+          myPaletteSmall3.requestUpdate();
+        }
+      });
+    
+      // initialize the first Palette
+      myPaletteSmall =
+        $(go.Palette, "myPaletteSmall",
+          { // share the templates with the main Diagram
+            nodeTemplate: myDiagram.nodeTemplate,
+            groupTemplate: myDiagram.groupTemplate
+          });
 
+          myPaletteSmall2 =
+        $(go.Palette, "myPaletteSmall2",
+          { // share the templates with the main Diagram
+            nodeTemplate: myDiagram.nodeTemplate,
+            groupTemplate: myDiagram.groupTemplate
+          });
+
+          myPaletteSmall3 =
+        $(go.Palette, "myPaletteSmall3",
+          { // share the templates with the main Diagram
+            nodeTemplate: myDiagram.nodeTemplate,
+            groupTemplate: myDiagram.groupTemplate
+          });
+
+      var green = '#B2FF59';
+      var blue = '#81D4FA';
+      var yellow = '#FFEB3B';
+
+      // specify the contents of the Palette
+      myPaletteSmall.model = new go.GraphLinksModel([
+        { text: "Integer", type:"int", array_operand: false, figure: "RoundedRectangle",value: "", fill: "#5a9bfe" },
+        { text: "Text", type:"text",  array_operand: false, figure: "File",value: "", fill: "#5a9bfe" },
+        { text: "Array" ,type:"array",  array_operand: true, figure: "Nonagon", array: "[1,2,3]", fill: "#5a9bfe" },
+      ]);
+
+      myPaletteSmall2.model = new go.GraphLinksModel([
+      { text: "+", figure: "Diamond", operator: true},
+      { text: "-", figure: "Diamond",  operator: true },
+      { text: "*", figure: "Diamond",  operator: true },
+      { text: "/", figure: "Diamond",  operator: true },
+      ]);
+
+      myPaletteSmall3.model = new go.GraphLinksModel([
+      { text: "Median", figure: "Diamond", operator: true},
+      { text: "Mode", figure: "Diamond",  operator: true },
+      { text: "Mean", figure: "Diamond",  operator: true },
+      ]);
+}
         // Show the diagram's model in JSON format that the user may edit
         function save() {
+
+            alert("asd");
+
+
             saveDiagramProperties();  // do this first, before writing to JSON
-            document.getElementById("mySavedModel").value = myDiagram.model.toJson();
+             var rawData = myDiagram.model.toJson();
+            console.log(rawData);
+             document.getElementById("mySavedModel").value = rawData;
             myDiagram.isModified = false;
         }
         function load() {
@@ -310,21 +379,81 @@
 </head>
 
 <body onload="init()">
-    </br>
+    <script type="text/javascript">
+        function Upload() {
+            var fileUpload = document.getElementById("fileUpload");
+            var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.csv|.txt)$/;
+            if (regex.test(fileUpload.value.toLowerCase())) {
+                if (typeof (FileReader) != "undefined") {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        var table = document.createElement("table");
+                        var rows = e.target.result.split("\n");
+                        for (var i = 0; i < rows.length; i++) {
+                            var row = table.insertRow(-1);
+                            var cells = rows[i].split(",");
+                            for (var j = 0; j < cells.length; j++) {
+                                var cell = row.insertCell(-1);
+                                cell.innerHTML = cells[j];
+                            }
+                        }
+                        var dvCSV = document.getElementById("dvCSV");
+                        dvCSV.innerHTML = "";
+                        dvCSV.appendChild(table);
+                    }
+                    reader.readAsText(fileUpload.files[0]);
+                } else {
+                    alert("This browser does not support HTML5.");
+                }
+            } else {
+                alert("Please upload a valid CSV file.");
+            }
+        }
+    </script>
+    <!-- <input type="file" id="fileUpload" />
+    <input type="button" id="upload" value="Upload" onclick="Upload()" /> -->
+    <div id="dvCSV">
+    </div>
+    <div class="header">
+        <div class="header-left"><span>Rulebase Implementation Editor v1</span></div>
+        <div class="header-right">
+            <div class="text-right">
+                <button class="btn-on" id="SaveButton" onclick="save()">Save</button>
+                <button class="btn-on left" onclick="load()">Load</button>
+            </div>
+        </div>
+    </div>
+    
     <div id="sample">
         <div style="width: 100%; display: flex; justify-content: space-between">
-            <div id="myPaletteDiv"
-                style="width: 105px; margin-right: 2px; background-color: whitesmoke; border: solid 1px black"></div>
+            <div style="width: 200px; margin-right: 2px; background-color: whitesmoke; border: solid 1px black">
+              <div id="accordion">
+                <h4>Operands</h4>
+                <div>
+                  <div id="myPaletteSmall" style="width: 140px; height: 360px"></div>
+                </div>
+                <h4>Basic Operators</h4>
+                <div>
+                  <div id="myPaletteSmall2" style="width: 140px; height: 360px"></div>
+                </div>
+                <h4>Statiscal Operators</h4>
+                <div>
+                  <div id="myPaletteSmall3" style="width: 140px; height: 360px"></div>
+                </div>
+              </div>
+            </div>
             <div id="myDiagramDiv" style="flex-grow: 1; height: 620px; border: solid 1px black"></div>
-            <span style="display: inline-block; vertical-align: top;">
-                Selected Part:<br>
+            <span style="width: 200px; margin-left: 2px; display: inline-block; vertical-align: top; background-color: whitesmoke;
+            border: solid 1px black;">
+                
+                <div style="text-align: center; margin-top: 10px;"><strong>Inspector</strong></div>
                 <div id="myInspectorDiv" class="inspector"> </div><br>
               </span>
         </div>
         
         Diagram Model saved in JSON format:
                 <div>
-                    <textarea id="mySavedModel" style="width:100%;height:1000px">
+                    <textarea id="mySavedModel" style="width:100%;height:200px">
             { "class": "go.GraphLinksModel",
               "linkFromPortIdProperty": "fromPort",
               "linkToPortIdProperty": "toPort",
@@ -334,13 +463,7 @@
              ]}
                 </textarea>
     </div>
-    <div class="text-right">
-        <button class="btn btn-success btn-lg" id="SaveButton" onclick="save()">Save</button>
-        <button class="btn btn-warning btn-lg" onclick="load()">Load</button>
-        </br>
-        </br>
-        </br>
-    </div>
+   
 </body>
 
 </html>

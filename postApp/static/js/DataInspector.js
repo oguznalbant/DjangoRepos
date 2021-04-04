@@ -97,11 +97,14 @@ function Inspector(divid, diagram, options) {
   }
 }
 
+// Oğuzhan
 // Some static predicates to use with the "show" property.
 Inspector.showIfNode = function(part) { return part instanceof go.Node };
 Inspector.showIfLink = function(part) { return part instanceof go.Link };
 Inspector.showIfGroup = function(part) { return part instanceof go.Group };
 Inspector.showIfNotOperator = function(part) { if(part.data.operator == true){ return false; } else { return true; }};
+Inspector.showIfArrayOperator = function(part) { if(part.data.array_operand == true){ return true; } else { return false; }};
+Inspector.showIfNotArrayAndOperator = function(part) { if(part.data.operator == true || part.data.array_operand == true){ return false; } else { return true; }};
 
 // Only show the property if its present. Useful for "key" which will be shown on Nodes and Groups, but normally not on Links
 Inspector.showIfPresent = function(data, propname) {
@@ -405,11 +408,18 @@ Inspector.prototype.buildPropertyRow = function(propertyName, propertyValue) {
   var self = this;
   function updateall() { self.updateAllProperties(); }
 
+  console.log(decProp.type);
   if (decProp && decProp.type === "select") {
     input = document.createElement("select");
     this.updateSelect(decProp, input, propertyName, propertyValue);
     input.addEventListener("change", updateall);
-  } else {
+  } else if (decProp && decProp.type === "textarea"){
+    input = document.createElement("textarea");
+    input.setAttribute("rows",10);
+    input.value = this.convertToString(propertyValue);
+    input.addEventListener("change", updateall);
+  }
+  else {
     input = document.createElement("input");
     if (input.setPointerCapture) {
       input.addEventListener("pointerdown", function(e) { input.setPointerCapture(e.pointerId); });

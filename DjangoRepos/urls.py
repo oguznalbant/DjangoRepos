@@ -16,8 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from postApp.views import home_view
+from postApp.views import planogram_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('home/', home_view),
+    path('planogram/', planogram_view),
 ]

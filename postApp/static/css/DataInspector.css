@@ -18,28 +18,54 @@ see also: DataInspector.js, DataInspector.html
 /*   #212121; /* Grey 900 */
 
 .inspector {
+  width: 100%;
   display: inline-block;
   font: bold 14px helvetica, sans-serif;
-  background-color: #212121; /* Grey 900 */
-  color: #F5F5F5; /* Grey 100 */
+  background-color: whitesmoke; /* Grey 900 */
+  color: #212121; /* Grey 100 */
   cursor: default;
 }
 
 .inspector table {
+  width: 100%;
   border-collapse: separate;
   border-spacing: 2px;
 }
 
+.inspector table tbody tr {
+  display: block;
+  margin-top: 10px;
+}
+
+.inspector table tbody tr td {
+  display: block;
+}
 .inspector td, th {
   padding: 2px;
 }
 
 .inspector input {
-  background-color: #424242; /* Grey 800 */
-  color: #F5F5F5; /* Grey 100 */
+  width: 100%;
+  background-color: whitesmoke; /* Grey 800 */
+  color: #1b1a1a; /* Grey 100 */
   font: bold 12px helvetica, sans-serif;
   border: 0px;
   padding: 2px;
+  border: #212121 solid 1px;
+}
+
+.inspector textarea {
+  width: 100%;
+  background-color: whitesmoke; /* Grey 800 */
+  color: #1b1a1a; /* Grey 100 */
+  font: bold 12px helvetica, sans-serif;
+  border: 0px;
+  padding: 2px;
+  border: #212121 solid 1px;
+}
+
+.inspector input[type='color'] {
+  width: 20%;
 }
 
 .inspector input:disabled {
