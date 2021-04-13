@@ -353,9 +353,6 @@
         // Show the diagram's model in JSON format that the user may edit
         function save() {
 
-            alert("asd");
-
-
             saveDiagramProperties();  // do this first, before writing to JSON
              var rawData = myDiagram.model.toJson();
             console.log(rawData);
@@ -463,7 +460,30 @@
              ]}
                 </textarea>
     </div>
-   
+    <button id="myClickButton" type="button">Click</button>
+
+<script>
+
+ 
+//now your ajax logic as usual
+
+$("#myClickButton").click(function(e) {
+    var editorVal =  $("#mySavedModel").val();
+    var jsonEditorValues = JSON.stringify(editorVal)
+
+console.log(jsonEditorValues);
+$.ajax({
+    url: '/save_data/',
+    type: 'POST',
+    contentType: 'application/json; charset=utf-8',
+    data: jsonEditorValues,
+    dataType: 'text',
+    success: function(result) {
+        alert(result.Result);
+    }
+})
+});
+</script>   
 </body>
 
 </html>

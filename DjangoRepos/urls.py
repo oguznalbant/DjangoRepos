@@ -17,9 +17,11 @@ from django.contrib import admin
 from django.urls import path
 from postApp.views import home_view
 from postApp.views import planogram_view
+from postApp.views import save_data
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('home/', home_view),
-    path('planogram/', planogram_view),
+    path('', home_view),
+    path('postApp/planogram/', planogram_view),
+    path('save_data/', save_data),
 ]
